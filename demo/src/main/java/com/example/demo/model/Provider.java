@@ -13,9 +13,10 @@ public class Provider {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+
     private String name;
-    private String adress;
+    private String address;
     private String phone;
     private String email;
 
