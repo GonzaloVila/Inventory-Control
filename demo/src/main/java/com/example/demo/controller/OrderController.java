@@ -35,7 +35,7 @@ public class OrderController {
     // Actualizar una orden existente (PUT)
     @PutMapping("/{id}")
     public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        order.setId(id);  // Asegura que se actualiza la orden con el ID correcto
+        order.setId(id);
         return orderService.saveOrder(order);
     }
 
