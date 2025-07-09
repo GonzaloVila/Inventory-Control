@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class InventoryControlApplication {
 
 	public static void main(String[] args) {
-		System.out.println("CORRIENDO");
 		SpringApplication.run(InventoryControlApplication.class, args);
+		System.out.println("CORRIENDO");
 	}
 
 }

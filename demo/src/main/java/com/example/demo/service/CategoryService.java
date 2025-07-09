@@ -4,7 +4,7 @@ import com.example.demo.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,18 +15,22 @@ public class CategoryService {
     CategoryRepository categoryRepository;
 
     // Obtener todas las categorias
-    public ArrayList<Category> getAllCategorys(){
-        return (ArrayList<Category>) categoryRepository.findAll();
+    public List<Category> getAllCategorys(){
+        return categoryRepository.findAll();
+    }
+
+    // Crear una categoria
+    public Category createCategory(Category category){
+        return categoryRepository.save(category);
     }
 
     // Obtener una categoria por ID
-    public Category getCategoryById(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.orElse(null);  // Retorna null si no se encuentra la categoria
+    public Optional<Category> getCategoryById(Long id) {
+        return categoryRepository.findById(id);
     }
 
-    // Guardar una nueva categoria o actualizar una existente
-    public Category saveCategory(Category category) {
+    // Actualiza una categoria existente
+    public Category updateCategory(Category category) {
         return categoryRepository.save(category);
     }
 

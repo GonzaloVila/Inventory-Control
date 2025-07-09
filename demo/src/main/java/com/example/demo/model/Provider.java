@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Provider {
@@ -12,10 +12,24 @@ public class Provider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "provider")
+    private List<Product> products;
+
     private String name;
     private String address;
     private String phone;
     private String email;
+
+    public Provider(){}
+
+    public Provider(Long id, String name, String address, String phone, String email) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.products = new ArrayList<Product>();
+    }
 
     public Long getId() {
         return id;
@@ -57,5 +71,15 @@ public class Provider {
         this.email = email;
     }
 
-    public Provider(){}
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void addProduct(Product product){
+        products.add(product);
+    }
 }

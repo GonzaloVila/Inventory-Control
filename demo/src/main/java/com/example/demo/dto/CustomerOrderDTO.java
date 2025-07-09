@@ -1,12 +1,8 @@
 package com.example.demo.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Date;
 
-@Getter @Setter
-public class OrderDTO {
+public class CustomerOrderDTO {
 
     private Integer id;
     private Date date;
@@ -15,9 +11,9 @@ public class OrderDTO {
     private Integer employeeId;
     private Integer providerId;
 
-    public OrderDTO(){}
+    public CustomerOrderDTO(){}
 
-    public OrderDTO(Integer id, Date date, String state, Double total, Integer employeeId, Integer providerId) {
+    public CustomerOrderDTO(Integer id, Date date, String state, Double total, Integer employeeId, Integer providerId) {
         this.id = id;
         this.date = date;
         this.state = state;

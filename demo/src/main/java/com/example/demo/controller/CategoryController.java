@@ -3,9 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.model.Category;
 import com.example.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/category")
@@ -16,32 +18,45 @@ public class CategoryController {
 
     // Obtener todas las categorias
     @GetMapping
-    public ArrayList<Category> getAllCategorys() {
-        return categoryService.getAllCategorys();
+    public ResponseEntity<List<Category>> getAllCategorys() {
+        return ResponseEntity.ok(categoryService.getAllCategorys());
     }
 
     // Obtener una categoria por ID
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Long id) {
-        return categoryService.getCategoryById(id);
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
+        Category category = categoryService.getCategoryById(id).orElse(null);
+        return ResponseEntity.ok(category);
     }
 
     // Crear una nueva categoria
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.saveCategory(category);
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+        return ResponseEntity.ok(categoryService.createCategory(category));
     }
 
     // Actualizar una categoria existente
-    @PutMapping("/{id}")
-    public Category updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        category.setId(id);
-        return categoryService.saveCategory(category);
+    @PutMapping()
+    public ResponseEntity<Category> updateCategory( @RequestBody Category category) {
+        ResponseEntity<Category> response = null;
+        if(category.getId() != null && categoryService.getCategoryById(category.getId()).isPresent()){
+            response = ResponseEntity.ok(categoryService.updateCategory(category));
+        }else{
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return  response;
     }
 
     // Eliminar una categoria
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable Long id) {
-        categoryService.deleteCategory(id);
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
+        ResponseEntity<String> response = null;
+        if (categoryService.getCategoryById(id).isPresent()){
+            categoryService.deleteCategory(id);
+            response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Category delete");
+        }else{
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return response;
     }
 }

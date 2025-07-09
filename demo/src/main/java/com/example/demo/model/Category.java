@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Category {
@@ -12,8 +12,20 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "category")
+    private List<Product> productList;
+
     private String nombre;
     private String description;
+
+    public Category(){}
+
+    public Category(Long id, String nombre, String description) {
+        this.id = id;
+        this.nombre = nombre;
+        this.description = description;
+        this.productList = new ArrayList<Product>();
+    }
 
     public Long getId() {
         return id;
@@ -39,5 +51,16 @@ public class Category {
         this.description = description;
     }
 
-    public Category(){}
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
+
+    public void addProduct(Product product) {
+        productList.add(product);
+        product.setCategory(this); // importante para mantener la relación bidireccional
+    }
 }

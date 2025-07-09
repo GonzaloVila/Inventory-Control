@@ -4,7 +4,7 @@ import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,18 +13,22 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    // Crear un producto
+    public Product createProduct(Product product){
+        return productRepository.save(product);
+    }
+
     // Obtener todos los productos
-    public ArrayList<Product> getAllProducts(){
-        return (ArrayList<Product>) productRepository.findAll();
+    public List<Product> getAllProducts(){
+        return productRepository.findAll();
     }
 
     // Obtener un producto por ID
-    public Product getProductById(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        return product.orElse(null);  // Retorna null si no se encuentra el producto
+    public Optional<Product> getProductById(Long id) {
+        return Optional.of(productRepository.getReferenceById(id));
     }
 
-    // Guardar un nuevo producto o actualizar uno existente
+    // Actualizar un producto
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }

@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Client {
@@ -12,11 +12,26 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "client")
+    private List<CustomerOrder> orders;
+
     private String name;
     private String email;
     private String password;
     private String phone;
     private String adress;
+
+    public Client (){}
+
+    public Client(Long id, String name, String email, String password, String phone, String adress) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.adress = adress;
+        this.orders = new ArrayList<CustomerOrder>();
+    }
 
     public Long getId() {
         return id;
@@ -66,6 +81,15 @@ public class Client {
         this.adress = adress;
     }
 
-    public Client (){}
+    public List<CustomerOrder> getOrders() {
+        return orders;
+    }
 
+    public void setOrders(List<CustomerOrder> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrder(CustomerOrder order){
+        orders.add(order);
+    }
 }

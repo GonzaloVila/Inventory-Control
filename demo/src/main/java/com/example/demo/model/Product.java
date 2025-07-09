@@ -16,12 +16,32 @@ public class Product {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category_id;
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    private Category category;
+
+    @Column(name = "category_id")
+    private Long categoryId;
 
     @ManyToOne
-    @JoinColumn(name = "provider_id")
-    private Provider provider_id;
+    @JoinColumn(name = "provider_id", insertable = false, updatable = false)
+    private Provider provider;
+
+    @Column(name = "provider_id")
+    private Long providerId;
+
+    public Product(){}
+
+    public Product(Long id, Category category, Provider provider, String name, String description, int stock, double price, Long categoryId, Long providerId) {
+        this.id = id;
+        this.category = category;
+        this.provider = provider;
+        this.name = name;
+        this.description = description;
+        this.stock = stock;
+        this.price = price;
+        this.categoryId = categoryId;
+        this.providerId = providerId;
+    }
 
     public Long getId() {
         return id;
@@ -63,21 +83,36 @@ public class Product {
         this.price = price;
     }
 
-    public Category getCategory_id() {
-        return category_id;
+    public Long getCategory_id() {
+        return categoryId;
     }
 
-    public void setCategory_id(Category category_id) {
-        this.category_id = category_id;
+    public void setCategory_id(Long category_id) {
+        this.categoryId = categoryId;
     }
 
-    public Provider getProvider_id() {
-        return provider_id;
+    public Long getProvider_id() {
+        return providerId;
     }
 
-    public void setProvider_id(Provider provider_id) {
-        this.provider_id = provider_id;
+    public void setProvider_id(Long  provider_id) {
+        this.providerId = providerId;
     }
 
-    public Product(){}
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Order;
-import com.example.demo.service.OrderService;
+import com.example.demo.model.CustomerOrder;
+import com.example.demo.service.CustomerOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,32 +9,32 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/order")
-public class OrderController {
+public class CustomerOrderController {
 
     @Autowired
-    OrderService orderService;
+    CustomerOrderService orderService;
 
     // Obtener todas las órdenes (GET)
     @GetMapping
-    public ArrayList<Order> getAllOrders() {
+    public ArrayList<CustomerOrder> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     // Obtener una orden por ID (GET)
     @GetMapping("/{id}")
-    public Order getOrderById(@PathVariable Long id) {
+    public CustomerOrder getOrderById(@PathVariable Long id) {
         return orderService.getOrderById(id);
     }
 
     // Crear una nueva orden (POST)
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
+    public CustomerOrder createOrder(@RequestBody CustomerOrder order) {
         return orderService.saveOrder(order);
     }
 
     // Actualizar una orden existente (PUT)
     @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
+    public CustomerOrder updateOrder(@PathVariable Long id, @RequestBody CustomerOrder order) {
         order.setId(id);
         return orderService.saveOrder(order);
     }
