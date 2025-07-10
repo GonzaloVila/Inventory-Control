@@ -15,14 +15,14 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> productList;
 
-    private String nombre;
+    private String name;
     private String description;
 
     public Category(){}
 
-    public Category(Long id, String nombre, String description) {
+    public Category(Long id, String name, String description) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = name;
         this.description = description;
         this.productList = new ArrayList<Product>();
     }
@@ -35,12 +35,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

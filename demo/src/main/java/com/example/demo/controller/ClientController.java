@@ -5,7 +5,8 @@ import com.example.demo.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
@@ -16,26 +17,26 @@ public class ClientController {
 
     //Obtener todos los clientes
     @GetMapping
-    public ArrayList<Client> getAllClients(){
+    public List<Client> getAllClients(){
         return clientService.getAllClients();
     }
 
     // Obtener un cliente por ID
     @GetMapping("/{id}")
-    public Client getClientById(@PathVariable Long id){
+    public Optional<Client> getClientById(@PathVariable Long id){
         return clientService.getClientById(id);
     }
 
     // Crear un nuevo cliente
     @PostMapping
     public Client createClient(@RequestBody Client client) {
-        return clientService.saveClient(client);
+        return clientService.updateClient(client);
     }
 
     // Actualizar un cliente existente
     @PutMapping("/{id}")
     public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
         client.setId(id);
-        return clientService.saveClient(client);
+        return clientService.updateClient(client);
     }
 }

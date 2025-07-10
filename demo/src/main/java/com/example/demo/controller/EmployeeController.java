@@ -6,7 +6,8 @@ import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employee")
@@ -17,26 +18,26 @@ public class EmployeeController {
 
     //Obtener todos los empleados
     @GetMapping
-    public ArrayList<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees(){
         return employeeService.getAllEmployees();
     }
 
     // Obtener un empleado por ID
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id){
+    public Optional<Employee> getEmployeeById(@PathVariable Long id){
         return employeeService.getEmployeeById(id);
     }
 
     // Crear un nuevo empleado
     @PostMapping
     public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeService.saveEmployee(employee);
+        return employeeService.updateEmployee(employee);
     }
 
     // Actualizar un empleado existente
     @PutMapping("/{id}")
     public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
         employee.setId(id);
-        return employeeService.saveEmployee(employee);
+        return employeeService.updateEmployee(employee);
     }
 }

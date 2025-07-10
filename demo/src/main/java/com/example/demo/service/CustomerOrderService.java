@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.CustomerOrder;
 import com.example.demo.repository.CustomerOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class CustomerOrderService {
 
     // Crear una orden
     public CustomerOrder createCustomerOrder(CustomerOrder customerOrder){
+        if (customerOrder == null || customerOrder.getClient() == null || customerOrder.getProvider_id() == null) {
+            throw new IllegalArgumentException("Faltan datos requeridos para crear la orden");
+        }
         return orderRepository.save(customerOrder);
     }
 
@@ -26,16 +30,25 @@ public class CustomerOrderService {
 
     // Obtener una orden por ID
     public Optional<CustomerOrder> getOrderById(Long id) {
+        if (!orderRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Orden con ID " + id + " no encontrada.");
+        }
         return Optional.of(orderRepository.getReferenceById(id));
     }
 
-    // Guardar una nueva orden o actualizar una existente
-    public CustomerOrder saveOrder(CustomerOrder order) {
+    // Actualiza una orden
+    public CustomerOrder updateOrder(CustomerOrder order) {
+        if (!orderRepository.existsById(order.getId())) {
+            throw new ResourceNotFoundException("No se puede actualizar: orden con ID " + order.getId() + " no existe.");
+        }
         return orderRepository.save(order);
     }
 
     // Eliminar una orden
     public void deleteOrder(Long id) {
+        if (!orderRepository.existsById(id)) {
+            throw new ResourceNotFoundException("No se puede eliminar: orden con ID " + id + " no existe.");
+        }
         orderRepository.deleteById(id);
     }
 }
