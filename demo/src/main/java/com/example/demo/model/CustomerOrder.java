@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,13 +31,13 @@ public class CustomerOrder {
     @JoinColumn(name = "provider_id")
     private Provider provider_id;
 
-    private Date date;
+    private LocalDate date;
     private String state;
     private Double total;
 
     public CustomerOrder(){}
 
-    public CustomerOrder(Long id, Client client, Employee employee, Long employeeId, Provider provider_id, Date date, String state, Double total) {
+    public CustomerOrder(Long id, Client client, Employee employee, Long employeeId, Provider provider_id, LocalDate date, String state, Double total) {
         this.id = id;
         this.client = client;
         this.employee = employee;
@@ -55,10 +56,10 @@ public class CustomerOrder {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
