@@ -38,7 +38,7 @@ public class AuthController {
     UserRepository userRepository;
 
     @Autowired
-    RolRepository roleRepository;
+    RolRepository rolRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -80,25 +80,25 @@ public class AuthController {
         Set<Rol> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Rol userRol = RolRepository.findByName(ERol.ROL_EMPLOYEE) // Rol por defecto si no se especifica
+            Rol userRol = rolRepository.findByName(ERol.ROL_EMPLOYEE) // Rol por defecto si no se especifica
                     .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
             roles.add(userRol);
         } else {
             strRoles.forEach(rol -> {
                 switch (rol) {
                     case "admin":
-                        Rol adminRol = RolRepository.findByName(ERol.ROL_ADMIN)
+                        Rol adminRol = rolRepository.findByName(ERol.ROL_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
                         roles.add(adminRol);
                         break;
                     case "manager":
-                        Rol managerRol = RolRepository.findByName(ERol.ROL_MANAGER)
+                        Rol managerRol = rolRepository.findByName(ERol.ROL_MANAGER)
                                 .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
                         roles.add(managerRol);
                         break;
                     case "employee": // Fallthrough para roles por defecto
                     default:
-                        Rol employeeRol = RolRepository.findByName(ERol.ROL_EMPLOYEE)
+                        Rol employeeRol = rolRepository.findByName(ERol.ROL_EMPLOYEE)
                                 .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
                         roles.add(employeeRol);
                 }
