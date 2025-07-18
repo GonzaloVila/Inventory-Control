@@ -10,6 +10,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @OneToMany(mappedBy = "client")
@@ -21,7 +22,9 @@ public class Client {
     private String phone;
     private String adress;
 
-    public Client (){}
+    public Client (){
+        this.orders = new ArrayList<>();
+    }
 
     public Client(Long id, String name, String email, String password, String phone, String adress) {
         this.id = id;
@@ -30,7 +33,7 @@ public class Client {
         this.password = password;
         this.phone = phone;
         this.adress = adress;
-        this.orders = new ArrayList<CustomerOrder>();
+        this.orders = new ArrayList<>();
     }
 
     public Long getId() {

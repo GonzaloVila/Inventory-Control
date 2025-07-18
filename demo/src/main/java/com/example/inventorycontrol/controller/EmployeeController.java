@@ -4,6 +4,8 @@ package com.example.inventorycontrol.controller;
 import com.example.inventorycontrol.model.Employee;
 import com.example.inventorycontrol.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,5 +41,12 @@ public class EmployeeController {
     public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
         employee.setId(id);
         return employeeService.updateEmployee(employee);
+    }
+
+    // Eliminar un empleado
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content
     }
 }

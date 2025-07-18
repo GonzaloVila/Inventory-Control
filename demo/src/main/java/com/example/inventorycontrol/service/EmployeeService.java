@@ -3,6 +3,7 @@ import com.example.inventorycontrol.exception.DuplicateResourceException;
 import com.example.inventorycontrol.exception.ResourceNotFoundException;
 import com.example.inventorycontrol.model.Employee;
 import com.example.inventorycontrol.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,11 @@ import java.util.Optional;
 @Service
 public class EmployeeService {
 
-    @Autowired // Inyección de dependencia para acceder al repositorio
+    @Autowired
     EmployeeRepository employeeRepository;
 
     // Crear un empleado
+    @Transactional
     public Employee createEmployee(Employee employee){
         if (employeeRepository.findByEmail(employee.getEmail()).isPresent()) {
             throw new DuplicateResourceException("Ya existe un empleado con el email: " + employee.getEmail());
@@ -37,6 +39,7 @@ public class EmployeeService {
     }
 
     // Actualizar un empleado
+    @Transactional
     public Employee updateEmployee(Employee employee) {
         if (!employeeRepository.existsById(employee.getId())) {
             throw new ResourceNotFoundException("No se puede actualizar: empleado con ID " + employee.getId() + " no existe.");
@@ -45,6 +48,7 @@ public class EmployeeService {
     }
 
     // Eliminar un empleado
+    @Transactional
     public void deleteEmployee(Long id) {
         if (!employeeRepository.existsById(id)) {
             throw new ResourceNotFoundException("No se puede eliminar: empleado con ID " + id + " no existe.");

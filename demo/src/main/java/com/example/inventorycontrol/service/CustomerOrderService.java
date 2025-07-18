@@ -17,7 +17,7 @@ public class CustomerOrderService {
 
     // Crear una orden
     public CustomerOrder createCustomerOrder(CustomerOrder customerOrder){
-        if (customerOrder == null || customerOrder.getClient() == null || customerOrder.getProvider_id() == null) {
+        if (customerOrder == null || customerOrder.getClient() == null || customerOrder.getProvider() == null) {
             throw new IllegalArgumentException("Faltan datos requeridos para crear la orden");
         }
         return orderRepository.save(customerOrder);

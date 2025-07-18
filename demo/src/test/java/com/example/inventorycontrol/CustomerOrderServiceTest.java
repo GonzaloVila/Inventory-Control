@@ -39,7 +39,7 @@ class CustomerOrderServiceTest {
         customerOrder = new CustomerOrder();
         customerOrder.setId(1L);
         customerOrder.setClient(new Client()); // Assume valid client
-        customerOrder.setProvider_id(new Provider()); // Assume valid provider
+        customerOrder.setProvider(new Provider()); // Assume valid provider
         customerOrder.setDate(LocalDate.now());
     }
 
