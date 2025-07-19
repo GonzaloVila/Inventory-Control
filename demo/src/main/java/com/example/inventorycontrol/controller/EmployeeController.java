@@ -1,6 +1,7 @@
 package com.example.inventorycontrol.controller;
 
 
+import com.example.inventorycontrol.exception.ResourceNotFoundException;
 import com.example.inventorycontrol.model.Employee;
 import com.example.inventorycontrol.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,17 @@ public class EmployeeController {
 
     // Obtener un empleado por ID
     @GetMapping("/{id}")
-    public Optional<Employee> getEmployeeById(@PathVariable Long id){
-        return employeeService.getEmployeeById(id);
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id){
+        Optional<Employee> employeeOptional = employeeService.getEmployeeById(id);
+        return employeeOptional.map(employee -> new ResponseEntity<>(employee, HttpStatus.OK))
+                .orElseThrow(() -> new ResourceNotFoundException("Empleado con ID " + id + " no encontrado."));
     }
 
     // Crear un nuevo empleado
     @PostMapping
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeService.updateEmployee(employee);
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        Employee newEmployee = employeeService.createEmployee(employee);
+        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED); // 201 Created
     }
 
     // Actualizar un empleado existente

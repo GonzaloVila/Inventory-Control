@@ -3,8 +3,6 @@ package com.example.inventorycontrol.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
-
-
 @Entity
 public class Product {
 
@@ -12,30 +10,30 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /* Nuevo campo para el soft delete
+    *  Se utiliza para que se pueda borrar un proveedor y
+    * poner como inactivo el producto cuando el proveedor no existe **/
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true; // Por defecto, un producto recién creado está activo
+
     private String name;
     private String description;
     private int stock;
     private double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    @JoinColumn(name = "category_id")
     @JsonBackReference("product-category")
     private Category category;
 
-    @Column(name = "category_id")
-    private Long categoryId;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "provider_id", insertable = false, updatable = false)
+    @JoinColumn(name = "provider_id")
     @JsonBackReference("product-provider")
     private Provider provider;
 
-    @Column(name = "provider_id")
-    private Long providerId;
-
     public Product(){}
 
-    public Product(Long id, Category category, Provider provider, String name, String description, int stock, double price, Long categoryId, Long providerId) {
+    public Product(Long id, Category category, Provider provider, String name, String description, int stock, double price) {
         this.id = id;
         this.category = category;
         this.provider = provider;
@@ -43,8 +41,7 @@ public class Product {
         this.description = description;
         this.stock = stock;
         this.price = price;
-        this.categoryId = categoryId;
-        this.providerId = providerId;
+        this.isActive = true;
     }
 
     public Long getId() {
@@ -87,22 +84,6 @@ public class Product {
         this.price = price;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Long getProviderId() {
-        return providerId;
-    }
-
-    public void setProviderId(Long  providerId) {
-        this.providerId = providerId;
-    }
-
     public Category getCategory() {
         return category;
     }
@@ -119,4 +100,25 @@ public class Product {
         this.provider = provider;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", isActive=" + isActive +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", stock=" + stock +
+                ", price=" + price +
+                ", category=" + category +
+                ", provider=" + provider +
+                '}';
+    }
 }

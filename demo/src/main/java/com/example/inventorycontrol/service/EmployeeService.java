@@ -32,10 +32,7 @@ public class EmployeeService {
 
     // Obtener un empleado por ID
     public Optional<Employee> getEmployeeById(Long id) {
-        if (!employeeRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Empleado con ID " + id + " no encontrado.");
-        }
-        return Optional.of(employeeRepository.getReferenceById(id));
+        return employeeRepository.findById(id);
     }
 
     // Actualizar un empleado

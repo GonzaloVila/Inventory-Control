@@ -1,14 +1,11 @@
 package com.example.inventorycontrol.controller;
 
-import com.example.inventorycontrol.exception.ResourceNotFoundException;
 import com.example.inventorycontrol.model.Product;
 import com.example.inventorycontrol.repository.ProductRepository;
 import com.example.inventorycontrol.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -35,22 +32,24 @@ public class ProductController {
 
     // Obtener un producto por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
+    public ResponseEntity<Optional<Product>> getProductById(@PathVariable Long id) {
+        Optional<Product> product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
     // Crear un nuevo producto
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product newProduct = productService.createProduct(product);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     }
 
     // Actualizar un producto existente
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        product.setId(id);
-        return productService.updateProduct(product);
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id,
+                                                 @RequestBody Product productDetails) { //
+        Product updatedProduct = productService.updateProduct(id, productDetails);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

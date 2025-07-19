@@ -3,8 +3,8 @@ package com.example.inventorycontrol.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Provider {
@@ -13,9 +13,9 @@ public class Provider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
     @JsonManagedReference("product-provider")
-    private List<Product> products;
+    private Set<Product> products = new HashSet<>();
 
     private String name;
     private String address;
@@ -30,7 +30,7 @@ public class Provider {
         this.address = address;
         this.phone = phone;
         this.email = email;
-        this.products = new ArrayList<Product>();
+        this.products = new HashSet<>();
     }
 
     public Long getId() {
@@ -73,11 +73,11 @@ public class Provider {
         this.email = email;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 
