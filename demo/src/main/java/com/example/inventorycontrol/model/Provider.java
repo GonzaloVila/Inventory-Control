@@ -17,6 +17,9 @@ public class Provider {
     @JsonManagedReference("product-provider")
     private Set<Product> products = new HashSet<>();
 
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
+
     private String name;
     private String address;
     private String phone;
@@ -31,6 +34,7 @@ public class Provider {
         this.phone = phone;
         this.email = email;
         this.products = new HashSet<>();
+        this.isActive = true;
     }
 
     public Long getId() {
@@ -83,5 +87,13 @@ public class Provider {
 
     public void addProduct(Product product){
         products.add(product);
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

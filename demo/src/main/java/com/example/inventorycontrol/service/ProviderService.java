@@ -4,31 +4,32 @@ import com.example.inventorycontrol.exception.DuplicateResourceException;
 import com.example.inventorycontrol.exception.ResourceNotFoundException;
 import com.example.inventorycontrol.model.Product;
 import com.example.inventorycontrol.model.Provider;
+import com.example.inventorycontrol.repository.ProductRepository;
 import com.example.inventorycontrol.repository.ProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ProviderService {
 
     private final ProviderRepository providerRepository;
     private final ProductService productService;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ProviderService(ProviderRepository providerRepository, ProductService productService) {
+    public ProviderService(ProviderRepository providerRepository, ProductService productService, ProductRepository productRepository) {
         this.providerRepository = providerRepository;
         this.productService = productService;
+        this.productRepository = productRepository;
     }
 
     @Transactional(readOnly = true)
     public List<Provider> getAllProviders() {
-        return providerRepository.findAll();
+        return providerRepository.findByIsActiveTrue();
     }
 
     @Transactional(readOnly = true)
@@ -38,7 +39,8 @@ public class ProviderService {
 
     @Transactional
     public Provider createProvider(Provider provider) {
-        if (providerRepository.findByEmail(provider.getEmail()).isPresent()) {
+        provider.setActive(true);
+        if (providerRepository.findByEmailAndIsActiveTrue(provider.getEmail()).isPresent()) {
             throw new DuplicateResourceException("El proveedor con email " + provider.getEmail() + " ya existe.");
         }
         return providerRepository.save(provider);
@@ -66,16 +68,14 @@ public class ProviderService {
     @Transactional
     public void deleteProvider(Long id) {
         Provider provider = providerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No se puede eliminar: proveedor con ID " + id + " no existe."));
-
-        Set<Product> products = provider.getProducts();
-        if (products != null && !products.isEmpty()) {
-            Set<Product> productsCopy = new HashSet<>(products);
-            for (Product product : productsCopy) {
-                productService.deleteProduct(product.getId());
-                products.remove(product);
-            }
+                .orElseThrow(() -> new ResourceNotFoundException("Proveedor no encontrado con ID: " + id));
+        List<Product> products = productRepository.findByProvider(provider);
+        for (Product product : products) {
+            product.setProvider(null);
+            productRepository.save(product);
         }
-        providerRepository.delete(provider);
+        // En lugar de borrar, marcar como inactivo
+        provider.setActive(false);
+        providerRepository.save(provider);
     }
 }

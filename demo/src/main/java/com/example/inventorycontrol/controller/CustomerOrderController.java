@@ -16,32 +16,32 @@ public class CustomerOrderController {
     @Autowired
     CustomerOrderService orderService;
 
-    // Obtener todas las órdenes (GET)
+    // Obtener todas las órdenes
     @GetMapping
     public List<CustomerOrder> getAllOrders() {
         return orderService.getAllOrders();
     }
 
-    // Obtener una orden por ID (GET)
+    // Obtener una orden por ID
     @GetMapping("/{id}")
     public Optional<CustomerOrder> getOrderById(@PathVariable Long id) {
         return orderService.getOrderById(id);
     }
 
-    // Crear una nueva orden (POST)
+    // Crear una nueva orden
     @PostMapping
     public CustomerOrder createOrder(@RequestBody CustomerOrder order) {
         return orderService.updateOrder(order);
     }
 
-    // Actualizar una orden existente (PUT)
+    // Actualizar una orden existente
     @PutMapping("/{id}")
     public CustomerOrder updateOrder(@PathVariable Long id, @RequestBody CustomerOrder order) {
         order.setId(id);
         return orderService.updateOrder(order);
     }
 
-    // Eliminar una orden (DELETE)
+    // Eliminar una orden
     @DeleteMapping("/{id}")
     public void deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);

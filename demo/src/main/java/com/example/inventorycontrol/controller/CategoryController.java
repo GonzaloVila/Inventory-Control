@@ -36,7 +36,7 @@ public class CategoryController {
     }
 
     // Actualizar una categoria existente
-    @PutMapping()
+    @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory( @RequestBody Category category) {
         ResponseEntity<Category> response = null;
         if(category.getId() != null && categoryService.getCategoryById(category.getId()).isPresent()){

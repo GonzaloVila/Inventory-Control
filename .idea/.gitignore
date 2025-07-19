@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# Intellij IDEA
+.idea/
+*.iml
+
+# Build artifacts
+/out/
+/target/
+.gradle/
+build/

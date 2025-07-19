@@ -28,7 +28,6 @@ public class CustomerOrder {
     @Column(name = "employee_id")
     private Long employeeId;
 
-
     @ManyToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;
