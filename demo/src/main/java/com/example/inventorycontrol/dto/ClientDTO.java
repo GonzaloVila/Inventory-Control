@@ -1,21 +1,34 @@
 package com.example.inventorycontrol.dto;
 
+import com.example.inventorycontrol.model.Client;
+
 public class ClientDTO {
-    private Integer id;
+    private Long id;
     private String name;
     private String email;
-    private String password;
     private String phone;
-    private String adress;
+    private String address;
 
     public ClientDTO (){}
 
-    public ClientDTO(Integer id, String name, String email, String password, String phone, String adress) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.adress = adress;
+    public ClientDTO(Client client) {
+        this.id = client.getId();
+        this.name = client.getName();
+        this.email = client.getEmail();
+        this.phone = client.getPhone();
+        this.address = client.getAddress();
     }
+
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getEmail() { return email; }
+    public String getPhone() { return phone; }
+    public String getAddress() { return address; }
+
+    // Opcional: Setters
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public void setAddress(String address) { this.address = address; }
 }

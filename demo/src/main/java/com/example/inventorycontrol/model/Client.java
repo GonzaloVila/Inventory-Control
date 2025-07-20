@@ -20,19 +20,20 @@ public class Client {
     private String email;
     private String password;
     private String phone;
-    private String adress;
+    @Column(name = "address")
+    private String address;
 
     public Client (){
         this.orders = new ArrayList<>();
     }
 
-    public Client(Long id, String name, String email, String password, String phone, String adress) {
+    public Client(Long id, String name, String email, String password, String phone, String address) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.adress = adress;
+        this.address = address;
         this.orders = new ArrayList<>();
     }
 
@@ -76,12 +77,12 @@ public class Client {
         this.phone = phone;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<CustomerOrder> getOrders() {

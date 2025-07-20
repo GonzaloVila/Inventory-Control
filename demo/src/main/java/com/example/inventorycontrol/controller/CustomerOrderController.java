@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/customerOrder")
 public class CustomerOrderController {
 
     @Autowired
@@ -30,8 +30,8 @@ public class CustomerOrderController {
 
     // Crear una nueva orden
     @PostMapping
-    public CustomerOrder createOrder(@RequestBody CustomerOrder order) {
-        return orderService.updateOrder(order);
+    public CustomerOrder createCustomerOrder(@RequestBody CustomerOrder order) {
+        return orderService.createCustomerOrder(order);
     }
 
     // Actualizar una orden existente

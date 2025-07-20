@@ -1,5 +1,6 @@
 package com.example.inventorycontrol.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -14,11 +15,13 @@ public class CustomerOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OrderItem> items = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,7 +31,7 @@ public class CustomerOrder {
     @Column(name = "employee_id")
     private Long employeeId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "provider_id")
     private Provider provider;
 
@@ -52,7 +55,6 @@ public class CustomerOrder {
         this.items = new ArrayList<>();
     }
 
-    // --- Getters y Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -79,5 +81,12 @@ public class CustomerOrder {
 
     public List<OrderItem> getItems() { return items; }
     public void setItems(List<OrderItem> items) { this.items = items; }
-    public void addItem(OrderItem orderItem){ items.add(orderItem); }
+    public void addItem(OrderItem orderItem){
+        items.add(orderItem);
+        orderItem.setOrder(this);
+    }
+    public void removeOrderItem(OrderItem orderItem) {
+        items.remove(orderItem);
+        orderItem.setOrder(null); // Desasociar
+    }
 }

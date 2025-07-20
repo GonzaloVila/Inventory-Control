@@ -1,8 +1,9 @@
 package com.example.inventorycontrol.dto;
 
-public class ProviderDTO {
+import com.example.inventorycontrol.model.Provider;
 
-    private Integer id;
+public class ProviderDTO {
+    private Long id;
     private String name;
     private String address;
     private String phone;
@@ -10,11 +11,24 @@ public class ProviderDTO {
 
     public ProviderDTO(){}
 
-    public ProviderDTO(Integer id, String name, String address, String phone, String email) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
+    public ProviderDTO(Provider provider) {
+        this.id = provider.getId();
+        this.name = provider.getName();
+        this.address = provider.getAddress();
+        this.phone = provider.getPhone();
+        this.email = provider.getEmail();
     }
+
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getAddress() { return address; }
+    public String getPhone() { return phone; }
+    public String getEmail() { return email; }
+
+    // Opcional: Setters
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setAddress(String address) { this.address = address; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public void setEmail(String email) { this.email = email; }
 }
