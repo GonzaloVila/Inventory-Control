@@ -19,7 +19,8 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Lo
             "LEFT JOIN FETCH co.items oi " +
             "LEFT JOIN FETCH oi.product p " +
             "LEFT JOIN FETCH co.client cl " +
-            "LEFT JOIN FETCH co.provider pr")
+            "LEFT JOIN FETCH co.provider pr"+
+            "LEFT JOIN FETCH co.employee e")
     List<CustomerOrder> findAllWithDetails();
 
     // cargar una sola orden con detalles
@@ -28,6 +29,7 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Lo
             "LEFT JOIN FETCH oi.product p " +
             "LEFT JOIN FETCH co.client cl " +
             "LEFT JOIN FETCH co.provider pr " +
+            "LEFT JOIN FETCH co.employee e " +
             "WHERE co.id = :id")
     Optional<CustomerOrder> findByIdWithDetails(Long id);
 }

@@ -1,6 +1,7 @@
 package com.example.inventorycontrol.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Client {
     private Long id;
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<CustomerOrder> orders;
 
     private String name;

@@ -2,7 +2,9 @@ package com.example.inventorycontrol.service;
 
 import com.example.inventorycontrol.exception.ResourceNotFoundException;
 import com.example.inventorycontrol.model.CustomerOrder;
+import com.example.inventorycontrol.model.Employee;
 import com.example.inventorycontrol.repository.CustomerOrderRepository;
+import com.example.inventorycontrol.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,28 +16,34 @@ public class CustomerOrderService {
 
     @Autowired
     CustomerOrderRepository orderRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     // Crear una orden
     public CustomerOrder createCustomerOrder(CustomerOrder customerOrder){
         if (customerOrder == null || customerOrder.getClient() == null || customerOrder.getProvider() == null) {
             throw new IllegalArgumentException("Faltan datos requeridos para crear la orden");
         }
+        if (customerOrder.getEmployee() != null && customerOrder.getEmployee().getId() != null) {
+            Employee employee = employeeRepository.findById(customerOrder.getEmployee().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Empleado no encontrado con ID: " + customerOrder.getEmployee().getId()));
+            customerOrder.setEmployee(employee);
+        } else {
+            throw new IllegalArgumentException("Empleado es requerido para la orden.");
+        }
         CustomerOrder savedOrder = orderRepository.save(customerOrder);
-        // Asegúrate de que las relaciones (items, client, provider) estén cargadas para el DTO
-        // Usamos findByIdWithDetails para recargar y asegurar la carga.
         return orderRepository.findByIdWithDetails(savedOrder.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Error al recargar la orden después de crear."));
     }
 
     // Obtener todas las órdenes
     public List<CustomerOrder> getAllOrders(){
-        return orderRepository.findAllWithDetails(); // <--- ¡CAMBIO AQUÍ!
+        return orderRepository.findAllWithDetails();
     }
 
     // Obtener una orden por ID
     public Optional<CustomerOrder> getOrderById(Long id) {
-        // No necesitas existsById si usas el método findByIdWithDetails que ya devuelve Optional
-        Optional<CustomerOrder> order = orderRepository.findByIdWithDetails(id); // <--- ¡CAMBIO AQUÍ!
+        Optional<CustomerOrder> order = orderRepository.findByIdWithDetails(id);
         if (order.isEmpty()) {
             throw new ResourceNotFoundException("Orden con ID " + id + " no encontrada.");
         }

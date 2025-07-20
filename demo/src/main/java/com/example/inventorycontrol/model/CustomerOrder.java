@@ -19,7 +19,6 @@ public class CustomerOrder {
     @JoinColumn(name = "client_id")
     private Client client;
 
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<OrderItem> items = new ArrayList<>();
@@ -27,9 +26,6 @@ public class CustomerOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Employee employee;
-
-    @Column(name = "employee_id")
-    private Long employeeId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "provider_id")
@@ -43,11 +39,10 @@ public class CustomerOrder {
         this.items = new ArrayList<>();
     }
 
-    public CustomerOrder(Long id, Client client, Employee employee, Long employeeId, Provider provider, LocalDate date, String state, Double total) {
+    public CustomerOrder(Long id, Client client, Employee employee, Provider provider, LocalDate date, String state, Double total) {
         this.id = id;
         this.client = client;
         this.employee = employee;
-        this.employeeId = employeeId;
         this.provider = provider;
         this.date = date;
         this.state = state;
@@ -69,9 +64,6 @@ public class CustomerOrder {
 
     public Employee getEmployee() { return employee; }
     public void setEmployee(Employee employee) { this.employee = employee; }
-
-    public Long getEmployeeId() { return employeeId; }
-    public void setEmployeeId(Long employeeId) { this.employeeId = employeeId; }
 
     public Provider getProvider() { return provider; }
     public void setProvider(Provider provider) { this.provider = provider; }
