@@ -1,0 +1,24 @@
+demo/HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Archivos de IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Artefactos de construcción (compilados)
+out/
+build/
+*.class
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
