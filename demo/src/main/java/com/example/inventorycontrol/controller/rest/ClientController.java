@@ -1,4 +1,4 @@
-package com.example.inventorycontrol.controller;
+package com.example.inventorycontrol.controller.rest;
 
 import com.example.inventorycontrol.exception.ResourceNotFoundException;
 import com.example.inventorycontrol.model.Client;

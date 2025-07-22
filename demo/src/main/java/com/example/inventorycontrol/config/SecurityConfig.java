@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableMethodSecurity // Permite usar @PreAuthorize
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -57,9 +57,19 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll() // Permitir registro/login sin autenticación
-                                .requestMatchers("/api/test/**").permitAll() // Para endpoints de prueba si los tienes
-                                .anyRequest().authenticated() // Todas las demás requests requieren autenticación
+                        auth
+                                // 1. Permitir acceso a recursos estáticos (CSS, JS, imágenes)
+                                .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/favicon.ico").permitAll()
+
+                                // 2. Permitir acceso a la página de inicio
+                                .requestMatchers("/", "/web/dashboard", "/web/login", "/web/register").permitAll()
+
+                                // 3. Endpoints de API REST para autenticación/prueba
+                                .requestMatchers("/api/auth/**").permitAll() // Permitir registro/login sin autenticación
+                                .requestMatchers("/api/test/**").permitAll() // Para endpoints de prueba
+
+                                // 4. Todas las demás requests requieren autenticación
+                                .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());

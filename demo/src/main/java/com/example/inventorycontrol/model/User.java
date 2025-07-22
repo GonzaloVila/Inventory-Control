@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users") // Evitar conflicto con la palabra clave 'user' en algunas DBs
+@Table(name = "users")
 public class User {
 
     @Id
@@ -16,9 +16,9 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    private String password; // ¡Será encriptada!
+    private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER) // Cargar roles junto con el usuario
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -56,7 +56,6 @@ public class CustomerOrderService {
             throw new ResourceNotFoundException("No se puede actualizar: orden con ID " + order.getId() + " no existe.");
         }
         CustomerOrder updatedOrder = orderRepository.save(order);
-        // Recarga para asegurar que las relaciones estén cargadas para el DTO
         return orderRepository.findByIdWithDetails(updatedOrder.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Error al recargar la orden después de actualizar."));
     }

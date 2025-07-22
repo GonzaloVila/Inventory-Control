@@ -13,9 +13,9 @@ public class Rol {
 
     @Enumerated(EnumType.STRING) // Guarda el nombre del enum como String
     @Column(length = 20, unique = true)
-    private ERol name; // Usaremos un enum para los nombres de roles
+    private ERol name;
 
-    @ManyToMany(mappedBy = "roles") // Mapeado por la relación en User
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
     // Constructores, Getters y Setters

@@ -9,14 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class DataLoader implements CommandLineRunner {
-    // 1. Inyecta el RoleRepository usando @Autowired
-    // Spring se encargará de crear una instancia de RolRepository y asignarla aquí
+
     @Autowired
     private RolRepository rolRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        // 2. Ahora puedes llamar a findByName() porque rolRepository es una instancia válida
         if (rolRepository.findByName(ERol.ROL_ADMIN).isEmpty()) {
             rolRepository.save(new Rol(ERol.ROL_ADMIN));
         }
@@ -29,7 +27,8 @@ public class DataLoader implements CommandLineRunner {
         if (rolRepository.findByName(ERol.ROL_VIEWER).isEmpty()) {
             rolRepository.save(new Rol(ERol.ROL_VIEWER));
         }
-        // Opcional: imprimir algo para saber que se ejecutó
+
+        // Opcional: imprimir para saber que se ejecutó
         System.out.println("Roles inicializados si no existían.");
     }
 }
