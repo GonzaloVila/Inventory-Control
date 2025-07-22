@@ -27,7 +27,7 @@ public class ClientWebController {
     public String listClients(Model model) {
         model.addAttribute("clients", clientService.getAllClients());
         model.addAttribute("pageTitle", "Lista de Clientes");
-        model.addAttribute("contentFragment", "clients/clientListContent"); // <--- AÑADIDO: Especifica el fragmento
+        model.addAttribute("contentFragment", "clients/clientListContent");
         return "layouts/main";
     }
 
@@ -38,7 +38,7 @@ public class ClientWebController {
             model.addAttribute("client", new Client());
         }
         model.addAttribute("pageTitle", "Añadir Cliente");
-        model.addAttribute("contentFragment", "clients/clientFormContent"); // <--- AÑADIDO: Especifica el fragmento
+        model.addAttribute("contentFragment", "clients/clientFormContent");
         return "layouts/main";
     }
 
@@ -51,21 +51,20 @@ public class ClientWebController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.client", bindingResult);
             redirectAttributes.addFlashAttribute("client", client);
             redirectAttributes.addFlashAttribute("errorMessage", "Por favor, corrige los errores en el formulario.");
-            // Cuando hay errores, es una redirección, por lo que el fragmento se manejará en el GET /add
-            return "redirect:/web/clients/add"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients/add";
         }
         try {
             clientService.createClient(client);
             redirectAttributes.addFlashAttribute("successMessage", "Cliente añadido exitosamente!");
-            return "redirect:/web/clients"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients";
         } catch (DuplicateResourceException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("client", client);
-            return "redirect:/web/clients/add"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients/add";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error inesperado al añadir cliente: " + e.getMessage());
             redirectAttributes.addFlashAttribute("client", client);
-            return "redirect:/web/clients/add"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients/add";
         }
     }
 
@@ -75,11 +74,11 @@ public class ClientWebController {
         Optional<Client> clientOptional = clientService.getClientById(id);
         if (clientOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Cliente no encontrado.");
-            return "redirect:/web/clients"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients";
         }
         model.addAttribute("client", clientOptional.get());
         model.addAttribute("pageTitle", "Editar Cliente");
-        model.addAttribute("contentFragment", "clients/clientFormContent"); // <--- AÑADIDO: Especifica el fragmento
+        model.addAttribute("contentFragment", "clients/clientFormContent");
         return "layouts/main";
     }
 
@@ -94,25 +93,25 @@ public class ClientWebController {
             redirectAttributes.addFlashAttribute("client", client);
             redirectAttributes.addFlashAttribute("errorMessage", "Por favor, corrige los errores en el formulario.");
             // Cuando hay errores, es una redirección al formulario de edición
-            return "redirect:/web/clients/edit/" + id; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients/edit/" + id;
         }
         try {
             client.setId(id);
             clientService.updateClient(client);
             redirectAttributes.addFlashAttribute("successMessage", "Cliente actualizado exitosamente!");
-            return "redirect:/web/clients"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients";
         } catch (ResourceNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("client", client);
-            return "redirect:/web/clients/edit/" + id; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients/edit/" + id;
         } catch (DuplicateResourceException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("client", client);
-            return "redirect:/web/clients/edit/" + id; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients/edit/" + id;
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error inesperado al actualizar cliente: " + e.getMessage());
             redirectAttributes.addFlashAttribute("client", client);
-            return "redirect:/web/clients/edit/" + id; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients/edit/" + id;
         }
     }
 
@@ -127,7 +126,7 @@ public class ClientWebController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error inesperado al eliminar cliente: " + e.getMessage());
         }
-        return "redirect:/web/clients"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+        return "redirect:/web/clients";
     }
 
     // 7. Mostrar detalles de un cliente
@@ -136,11 +135,11 @@ public class ClientWebController {
         Optional<Client> clientOptional = clientService.getClientById(id);
         if (clientOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Cliente no encontrado.");
-            return "redirect:/web/clients"; // <--- CAMBIO: Debe ser una REDIRECCIÓN
+            return "redirect:/web/clients";
         }
         model.addAttribute("client", clientOptional.get());
         model.addAttribute("pageTitle", "Detalles del Cliente");
-        model.addAttribute("contentFragment", "clients/clientDetailContent"); // <--- AÑADIDO: Especifica el fragmento
+        model.addAttribute("contentFragment", "clients/clientDetailContent");
         return "layouts/main";
     }
 }

@@ -57,27 +57,25 @@ public class AuthWebController {
 
     @PostMapping("/register")
     public String processRegister(@Valid @ModelAttribute("signupRequest") SignupRequest signupRequest,
-                                  BindingResult bindingResult, // Captura los errores de validación
+                                  BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
 
-        // Si hay errores de validación del lado del servidor (NotBlank, Size, Email)
         if (bindingResult.hasErrors()) {
-            // Se añaden los errores de validación para que se muestren en la vista
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.signupRequest", bindingResult);
-            redirectAttributes.addFlashAttribute("signupRequest", signupRequest); // Para repoblar el formulario
+            redirectAttributes.addFlashAttribute("signupRequest", signupRequest);
             redirectAttributes.addFlashAttribute("errorMessage", "Por favor, corrige los errores en el formulario.");
-            return "redirect:/web/register"; // Redirige de nuevo al formulario de registro
+            return "redirect:/web/register";
         }
 
         try {
             registrationService.registerUser(signupRequest);
             redirectAttributes.addFlashAttribute("successMessage", "Registro exitoso. ¡Ahora puedes iniciar sesión!");
-            return "redirect:/web/login"; // Redirige al login después de un registro exitoso
-        } catch (RuntimeException e) { // Captura las excepciones lanzadas por RegistrationService
+            return "redirect:/web/login";
+        } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("signupRequest", signupRequest);
             return "redirect:/web/register";
-        } catch (Exception e) { // Captura cualquier otra excepción inesperada
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error inesperado al registrar: " + e.getMessage());
             redirectAttributes.addFlashAttribute("signupRequest", signupRequest);
             return "redirect:/web/register";
@@ -98,7 +96,7 @@ public class AuthWebController {
             }
         }
         model.addAttribute("pageTitle", "Dashboard de Inventario");
-        model.addAttribute("contentFragment", "dashboardContent"); // <--- AÑADIDO: Especifica el fragmento
-        return "layouts/main"; // Retorna el layout principal
+        model.addAttribute("contentFragment", "dashboardContent");
+        return "layouts/main";
     }
 }
