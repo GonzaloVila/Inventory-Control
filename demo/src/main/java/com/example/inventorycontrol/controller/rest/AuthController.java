@@ -73,34 +73,53 @@ public class AuthController {
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        // Crear nuevo usuario
-        User user = new User(signupRequest.getUsername(), encoder.encode(signupRequest.getPassword()));
+        if (userRepository.existsByEmail(signupRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+
+        User user = new User(
+                signupRequest.getUsername(),
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword())
+        );
 
         Set<String> strRoles = signupRequest.getRol();
         Set<Rol> roles = new HashSet<>();
 
-        if (strRoles == null) {
-            Rol userRol = rolRepository.findByName(ERol.ROL_EMPLOYEE) // Rol por defecto si no se especifica
-                    .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
+        if (strRoles == null || strRoles.isEmpty()) {
+            Rol userRol = rolRepository.findByName(ERol.ROL_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Rol 'USER' not found."));
             roles.add(userRol);
         } else {
             strRoles.forEach(rol -> {
                 switch (rol) {
                     case "admin":
                         Rol adminRol = rolRepository.findByName(ERol.ROL_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Rol 'ADMIN' not found."));
                         roles.add(adminRol);
                         break;
                     case "manager":
                         Rol managerRol = rolRepository.findByName(ERol.ROL_MANAGER)
-                                .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Rol 'MANAGER' not found."));
                         roles.add(managerRol);
                         break;
-                    case "employee": // Fallthrough para roles por defecto
-                    default:
+                    case "employee":
                         Rol employeeRol = rolRepository.findByName(ERol.ROL_EMPLOYEE)
-                                .orElseThrow(() -> new RuntimeException("Error: Rol is not found."));
+                                .orElseThrow(() -> new RuntimeException("Error: Rol 'EMPLOYEE' not found."));
                         roles.add(employeeRol);
+                        break;
+                    case "user":
+                        Rol userRol = rolRepository.findByName(ERol.ROL_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Rol 'USER' not found."));
+                        roles.add(userRol);
+                        break;
+                    default:
+                        Rol defaultRol = rolRepository.findByName(ERol.ROL_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Default Rol 'USER' not found."));
+                        roles.add(defaultRol);
                 }
             });
         }

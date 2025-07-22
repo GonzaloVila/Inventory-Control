@@ -24,8 +24,8 @@ public class DataLoader implements CommandLineRunner {
         if (rolRepository.findByName(ERol.ROL_EMPLOYEE).isEmpty()) {
             rolRepository.save(new Rol(ERol.ROL_EMPLOYEE));
         }
-        if (rolRepository.findByName(ERol.ROL_VIEWER).isEmpty()) {
-            rolRepository.save(new Rol(ERol.ROL_VIEWER));
+        if (rolRepository.findByName(ERol.ROL_USER).isEmpty()) {
+            rolRepository.save(new Rol(ERol.ROL_USER));
         }
 
         // Opcional: imprimir para saber que se ejecutó

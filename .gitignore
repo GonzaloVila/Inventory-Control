@@ -22,3 +22,28 @@ Thumbs.db
 # Logs
 *.log
 
+# Archivos estáticos de la plantilla SB Admin 2
+demo/src/main/resources/static/vendor
+demo/src/main/resources/static/css/sb-admin-2.min.css
+demo/src/main/resources/static/css/sb-admin-2.css
+demo/src/main/resources/static/js/sb-admin-2.min.js
+demo/src/main/resources/static/js/sb-admin-2.js
+demo/src/main/resources/static/js/demo/
+demo/src/main/resources/static/img/
+
+# Dependencias generadas por Maven
+.idea_modules/
+.classpath
+.project
+.settings/
+
+# Archivos específicos de entornos de ejecución
+*.jar
+*.war
+*.zip
+*.tar.gz
+.vscode/
+
+# Dependencias de Maven
+/lib/
+/repository/

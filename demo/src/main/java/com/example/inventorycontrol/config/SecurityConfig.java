@@ -17,10 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -53,28 +55,40 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable) // Desactivar CSRF para APIs REST
+        http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authorizeHttpRequests(auth ->
-                        auth
-                                // 1. Permitir acceso a recursos estáticos (CSS, JS, imágenes)
-                                .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/favicon.ico").permitAll()
-
-                                // 2. Permitir acceso a la página de inicio
-                                .requestMatchers("/", "/web/dashboard", "/web/login", "/web/register").permitAll()
-
-                                // 3. Endpoints de API REST para autenticación/prueba
-                                .requestMatchers("/api/auth/**").permitAll() // Permitir registro/login sin autenticación
-                                .requestMatchers("/api/test/**").permitAll() // Para endpoints de prueba
-
-                                // 4. Todas las demás requests requieren autenticación
+                        auth.requestMatchers("/api/auth/**").permitAll() // Sigue permitiendo tus endpoints de API REST
+                                .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                                .requestMatchers("/web/login", "/web/register").permitAll()
+                                .requestMatchers("/", "/web").permitAll() // Para las redirecciones iniciales
+                                .requestMatchers("/login").permitAll()
                                 .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                                .loginPage("/web/login") // Esta es la URL de la página de login
+                                .loginProcessingUrl("/login") // URL a la que el formulario POSTea los datos
+                                .defaultSuccessUrl("/web/dashboard", true) // URL a la que redirigir después de login exitoso
+                                .failureUrl("/web/login?error") // URL a la que redirigir si el login falla
+                )
+                // Configuración de Logout
+                .logout(logout -> logout
+                        .logoutUrl("/logout") // URL para la acción de logout
+                        .logoutSuccessUrl("/web/login?logout") // URL a la que redirigir después de un logout exitoso
+                        .permitAll() // Permitir acceso a la URL de logout
                 );
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("redirect:/web/login");
+        registry.addViewController("/web").setViewName("redirect:/web/login");
     }
 }

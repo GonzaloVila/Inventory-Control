@@ -1,10 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div th:replace="~{layouts/main :: #wrapper}"
+     th:with="contentFragment='clientFormContent', pageTitle=${client.id == null ? 'Añadir Cliente' : 'Editar Cliente'}"
+     xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="clientFormContent">
+        <div class="container-fluid">
+            <h1 class="h3 mb-4 text-gray-800" th:text="${client.id == null ? 'Añadir Nuevo Cliente' : 'Editar Cliente'}"></h1>
 
-</body>
-</html>
+            <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <ul th:if="${#fields.hasErrors('global')}" class="alert alert-danger">
+                <li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
+            </ul>
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary" th:text="${client.id == null ? 'Formulario de Añadir Cliente' : 'Formulario de Edición de Cliente'}"></h6>
+                </div>
+                <div class="card-body">
+                    <form th:action="${client.id == null ? @{/web/clients/add} : @{/web/clients/update/__${client.id}__}}" th:object="${client}" method="post">
+
+                        <input type="hidden" th:field="*{id}" th:if="${client.id != null}" />
+
+                        <div class="form-group">
+                            <label for="document">Documento:</label>
+                            <input type="text" id="document" th:field="*{document}" class="form-control" />
+                            <span th:if="${#fields.hasErrors('document')}" th:errors="*{document}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Nombre:</label>
+                            <input type="text" id="name" th:field="*{name}" class="form-control" />
+                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Apellido:</label>
+                            <input type="text" id="lastName" th:field="*{lastName}" class="form-control" />
+                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" th:field="*{email}" class="form-control" />
+                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Teléfono:</label>
+                            <input type="text" id="phone" th:field="*{phone}" class="form-control" />
+                            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Dirección:</label>
+                            <input type="text" id="address" th:field="*{address}" class="form-control" />
+                            <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Estado:</label>
+                            <select id="status" th:field="*{status}" class="form-control">
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+                            <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" th:text="${client.id == null ? 'Guardar Cliente' : 'Actualizar Cliente'}"></button>
+                        <a th:href="@{/web/clients}" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

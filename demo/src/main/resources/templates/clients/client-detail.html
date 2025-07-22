@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div th:replace="~{layouts/main :: #wrapper}"
+     th:with="contentFragment='clientDetailContent', pageTitle='Detalles del Cliente'"
+     xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="clientDetailContent">
+        <div class="container-fluid">
+            <h1 class="h3 mb-4 text-gray-800">Detalles del Cliente</h1>
 
-</body>
-</html>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Información del Cliente</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">ID:</dt>
+                        <dd class="col-sm-9" th:text="${client.id}"></dd>
+
+                        <dt class="col-sm-3">Documento:</dt>
+                        <dd class="col-sm-9" th:text="${client.document}"></dd>
+
+                        <dt class="col-sm-3">Nombre:</dt>
+                        <dd class="col-sm-9" th:text="${client.name}"></dd>
+
+                        <dt class="col-sm-3">Apellido:</dt>
+                        <dd class="col-sm-9" th:text="${client.lastName}"></dd>
+
+                        <dt class="col-sm-3">Email:</dt>
+                        <dd class="col-sm-9" th:text="${client.email}"></dd>
+
+                        <dt class="col-sm-3">Teléfono:</dt>
+                        <dd class="col-sm-9" th:text="${client.phone}"></dd>
+
+                        <dt class="col-sm-3">Dirección:</dt>
+                        <dd class="col-sm-9" th:text="${client.address}"></dd>
+
+                        <dt class="col-sm-3">Estado:</dt>
+                        <dd class="col-sm-9" th:text="${client.status}"></dd>
+
+                    </dl>
+
+                    <a th:href="@{/web/clients/edit/{id}(id=${client.id})}" class="btn btn-warning">Editar Cliente</a>
+                    <a th:href="@{/web/clients}" class="btn btn-secondary">Volver a la Lista</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

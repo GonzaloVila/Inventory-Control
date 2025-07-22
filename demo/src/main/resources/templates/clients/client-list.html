@@ -1,0 +1,59 @@
+<div th:fragment="clientListContent" xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800">Clientes</h1>
+
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <p><a th:href="@{/web/clients/add}" class="btn btn-primary">Añadir Nuevo Cliente</a></p>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Lista de Clientes</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Documento</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="client : ${clients}">
+                            <td th:text="${client.id}"></td>
+                            <td th:text="${client.document}"></td>
+                            <td th:text="${client.name}"></td>
+                            <td th:text="${client.lastName}"></td>
+                            <td th:text="${client.email}"></td>
+                            <td th:text="${client.phone}"></td>
+                            <td th:text="${client.address}"></td>
+                            <td th:text="${client.status}"></td>
+                            <td>
+                                <a th:href="@{/web/clients/edit/{id}(id=${client.id})}" class="btn btn-sm btn-warning">Editar</a>
+                                <form th:action="@{/web/clients/delete/{id}(id=${client.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');">Eliminar</button>
+                                </form>
+                                <a th:href="@{/web/clients/{id}(id=${client.id})}" class="btn btn-sm btn-info">Ver</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <a th:href="@{/web/dashboard}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+</div>
