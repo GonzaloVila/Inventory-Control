@@ -1,0 +1,48 @@
+<div th:fragment="clientDetailContent" xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800">Detalles del Cliente</h1>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary" th:text="${client.name} + ' ' + ${client.lastName}"></h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>ID:</strong> <span th:text="${client.id}"></span></p>
+                        <p><strong>Nombre:</strong> <span th:text="${client.name}"></span></p>
+                        <p><strong>Apellido:</strong> <span th:text="${client.lastName}"></span></p>
+                        <p><strong>Documento:</strong> <span th:text="${client.document}"></span></p>
+                        <p><strong>Email:</strong> <span th:text="${client.email}"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Teléfono:</strong> <span th:text="${client.phone}"></span></p>
+                        <p><strong>Dirección:</strong> <span th:text="${client.address}"></span></p>
+                    </div>
+                </div>
+
+                <hr>
+                <h5 class="mt-4">Pedidos del Cliente:</h5>
+                <div th:if="${client.orders != null and !client.orders.isEmpty()}">
+                    <ul>
+                        <li th:each="order : ${client.orders}">
+                            Pedido ID: <span th:text="${order.id}"></span> - Fecha: <span th:text="${order.date}"></span>
+                            Total: <span th:text="${order.total}"></span> - Estado: <span th:text="${order.state}"></span>
+
+                            - Empleado: <span th:text="${order.employee?.name ?: 'N/A'}"></span>
+                            - Proveedor: <span th:text="${order.provider?.name ?: 'N/A'}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div th:unless="${client.orders != null and !client.orders.isEmpty()}">
+                    <p>Este cliente no tiene pedidos asociados.</p>
+                </div>
+
+                <hr>
+
+                <a th:href="@{/web/clients/edit/{id}(id=${client.id})}" class="btn btn-warning">Editar Cliente</a>
+                <a th:href="@{/web/clients}" class="btn btn-secondary">Volver a la Lista</a>
+            </div>
+        </div>
+    </div>
+</div>

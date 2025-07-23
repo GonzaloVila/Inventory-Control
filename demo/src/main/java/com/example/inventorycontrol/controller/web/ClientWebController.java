@@ -100,11 +100,7 @@ public class ClientWebController {
             clientService.updateClient(client);
             redirectAttributes.addFlashAttribute("successMessage", "Cliente actualizado exitosamente!");
             return "redirect:/web/clients";
-        } catch (ResourceNotFoundException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            redirectAttributes.addFlashAttribute("client", client);
-            return "redirect:/web/clients/edit/" + id;
-        } catch (DuplicateResourceException e) {
+        } catch (ResourceNotFoundException | DuplicateResourceException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("client", client);
             return "redirect:/web/clients/edit/" + id;

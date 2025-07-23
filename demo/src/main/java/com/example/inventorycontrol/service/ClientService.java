@@ -31,7 +31,7 @@ public class ClientService {
 
     // Obtener un cliente por ID
     public Optional<Client> getClientById(Long id) {
-        return clientRepository.findById(id);
+        return clientRepository.findByIdWithOrders(id);
     }
 
     // Actualizar un cliente

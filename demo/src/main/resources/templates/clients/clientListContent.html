@@ -27,7 +27,6 @@
                             <th>Email</th>
                             <th>Teléfono</th>
                             <th>Dirección</th>
-                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -40,7 +39,6 @@
                             <td th:text="${client.email}"></td>
                             <td th:text="${client.phone}"></td>
                             <td th:text="${client.address}"></td>
-                            <td th:text="${client.status}"></td>
                             <td>
                                 <a th:href="@{/web/clients/edit/{id}(id=${client.id})}" class="btn btn-sm btn-warning">Editar</a>
                                 <form th:action="@{/web/clients/delete/{id}(id=${client.id})}" method="post" style="display:inline;">
