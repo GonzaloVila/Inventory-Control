@@ -24,7 +24,7 @@ public class CustomerOrder {
     private List<OrderItem> items = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY)

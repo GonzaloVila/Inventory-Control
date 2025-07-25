@@ -1,0 +1,86 @@
+<div th:fragment="orderFormContent" xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800" th:text="${pageTitle}"></h1>
+
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary" th:text="${order.id == null ? 'Nuevo Pedido' : 'Editar Pedido'}"></h6>
+            </div>
+            <div class="card-body">
+                <form th:action="@{${order.id == null ? '/web/orders/add' : '/web/orders/update/' + order.id}}" th:object="${order}" method="post">
+                    <input type="hidden" th:field="*{id}" th:if="${order.id != null}" />
+
+                    <div class="form-group">
+                        <label for="client">Cliente:</label>
+                        <select class="form-control" id="client" th:field="*{client.id}" required>
+                            <option value="">-- Seleccione un Cliente --</option>
+                            <option th:each="client : ${clients}"
+                                    th:value="${client.id}"
+                                    th:text="${client.name + ' ' + client.lastName}"
+                                    th:selected="${order.client != null and order.client.id == client.id}"></option>
+                        </select>
+                        <div class="text-danger" th:if="${#fields.hasErrors('client')}" th:errors="*{client}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employee">Empleado:</label>
+                        <select class="form-control" id="employee" th:field="*{employee.id}" required>
+                            <option value="">-- Seleccione un Empleado --</option>
+                            <option th:each="employee : ${employees}"
+                                    th:value="${employee.id}"
+                                    th:text="${employee.name}"
+                                    th:selected="${order.employee != null and order.employee.id == employee.id}"></option>
+                        </select>
+                        <div class="text-danger" th:if="${#fields.hasErrors('employee')}" th:errors="*{employee}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="provider">Proveedor:</label>
+                        <select class="form-control" id="provider" th:field="*{provider.id}" required>
+                            <option value="">-- Seleccione un Proveedor --</option>
+                            <option th:each="provider : ${providers}"
+                                    th:value="${provider.id}"
+                                    th:text="${provider.name}"
+                                    th:selected="${order.provider != null and order.provider.id == provider.id}"></option>
+                        </select>
+                        <div class="text-danger" th:if="${#fields.hasErrors('provider')}" th:errors="*{provider}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Fecha:</label>
+                        <input type="date" class="form-control" id="date" th:field="*{date}" required>
+                        <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">Estado:</label>
+                        <select class="form-control" id="state" th:field="*{state}" required>
+                            <option value="">-- Seleccione un Estado --</option>
+                            <option th:each="stateOption : ${orderStates}"
+                                    th:value="${stateOption}"
+                                    th:text="${stateOption}"
+                                    th:selected="${order.state == stateOption}"></option>
+                        </select>
+                        <div class="text-danger" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="total">Total:</label>
+                        <input type="number" step="0.01" class="form-control" id="total" th:field="*{total}" required>
+                        <div class="text-danger" th:if="${#fields.hasErrors('total')}" th:errors="*{total}"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar Pedido</button>
+                    <a th:href="@{/web/orders}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

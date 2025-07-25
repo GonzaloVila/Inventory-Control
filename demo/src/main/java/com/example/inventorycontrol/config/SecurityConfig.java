@@ -60,7 +60,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll() // Sigue permitiendo tus endpoints de API REST
                                 .requestMatchers("/api/test/**").permitAll()
-                                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                                .requestMatchers("/css/**", "/js/**", "/images/**", "/vendor/**").permitAll()
                                 .requestMatchers("/web/login", "/web/register").permitAll()
                                 .requestMatchers("/", "/web").permitAll() // Para las redirecciones iniciales
                                 .requestMatchers("/login").permitAll()

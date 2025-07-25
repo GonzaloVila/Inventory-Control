@@ -1,0 +1,56 @@
+<div th:fragment="orderDetailContent" xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800">Detalles del Pedido</h1>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Pedido ID: <span th:text="${order.id}"></span></h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Fecha:</strong> <span th:text="${order.date}"></span></p>
+                        <p><strong>Estado:</strong> <span th:text="${order.state}"></span></p>
+                        <p><strong>Total:</strong> <span th:text="${order.total}"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Cliente:</strong> <span th:text="${order.client?.name + ' ' + order.client?.lastName ?: 'N/A'}"></span></p>
+                        <p><strong>Empleado:</strong> <span th:text="${order.employee?.name ?: 'N/A'}"></span></p>
+                        <p><strong>Proveedor:</strong> <span th:text="${order.provider?.name ?: 'N/A'}"></span></p>
+                    </div>
+                </div>
+
+                <hr>
+                <h5 class="mt-4">Ítems del Pedido:</h5>
+                <div th:if="${order.items != null and !order.items.isEmpty()}">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${order.items}">
+                            <td th:text="${item.product?.name ?: 'N/A'}"></td>
+                            <td th:text="${item.quantity}"></td>
+                            <td th:text="${item.priceAtOrder}"></td>
+                            <td th:text="${item.quantity * item.priceAtOrder}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:unless="${order.items != null and !order.items.isEmpty()}">
+                    <p>Este pedido no tiene ítems asociados.</p>
+                </div>
+
+                <hr>
+
+                <a th:href="@{/web/orders/edit/{id}(id=${order.id})}" class="btn btn-warning">Editar Pedido</a>
+                <a th:href="@{/web/orders}" class="btn btn-secondary">Volver a la Lista</a>
+            </div>
+        </div>
+    </div>
+</div>

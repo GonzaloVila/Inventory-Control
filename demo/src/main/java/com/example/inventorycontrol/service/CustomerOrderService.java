@@ -7,7 +7,9 @@ import com.example.inventorycontrol.repository.CustomerOrderRepository;
 import com.example.inventorycontrol.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,14 +22,16 @@ public class CustomerOrderService {
     EmployeeRepository employeeRepository;
 
     // Crear una orden
+    @Transactional
     public CustomerOrder createCustomerOrder(CustomerOrder customerOrder){
-        if (customerOrder == null || customerOrder.getClient() == null || customerOrder.getProvider() == null) {
-            throw new IllegalArgumentException("Faltan datos requeridos para crear la orden");
+        if (customerOrder == null || customerOrder.getClient() == null || customerOrder.getProvider() == null || customerOrder.getEmployee() == null) {
+            throw new IllegalArgumentException("Faltan datos requeridos (cliente, proveedor o empleado) para crear la orden.");
         }
         if (customerOrder.getEmployee() != null && customerOrder.getEmployee().getId() != null) {
-            Employee employee = employeeRepository.findById(customerOrder.getEmployee().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Empleado no encontrado con ID: " + customerOrder.getEmployee().getId()));
-            customerOrder.setEmployee(employee);
+            boolean employeeExists = employeeRepository.existsById(customerOrder.getEmployee().getId());
+            if (!employeeExists) {
+                throw new ResourceNotFoundException("Empleado no encontrado con ID: " + customerOrder.getEmployee().getId());
+            }
         } else {
             throw new IllegalArgumentException("Empleado es requerido para la orden.");
         }
