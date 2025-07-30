@@ -45,7 +45,7 @@ public class CategoryServiceTest {
         when(categoryRepository.findAll()).thenReturn(List.of(category));
 
         // Act (Actuar)
-        List<Category> result = categoryService.getAllCategorys();
+        List<Category> result = categoryService.getAllCategories();
 
         // Assert (Afirmar)
         assertNotNull(result);

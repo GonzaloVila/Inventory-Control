@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+
+<div th:fragment="productDetailContent">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800" th:text="${pageTitle}"></h1>
+        <a th:href="@{/web/products}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+            <i class="fas fa-arrow-left fa-sm text-white-50"></i> Volver a la Lista
+        </a>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Detalles del Producto: <span th:text="${product.name}"></span></h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p><strong>ID:</strong> <span th:text="${product.id}"></span></p>
+                    <p><strong>Nombre:</strong> <span th:text="${product.name}"></span></p>
+                    <p><strong>Descripción:</strong> <span th:text="${product.description}"></span></p>
+                    <p><strong>Stock:</strong> <span th:text="${product.stock}"></span></p>
+                    <p><strong>Precio:</strong> <span th:text="${#numbers.formatCurrency(product.price)}"></span></p>
+                </div>
+                <div class="col-lg-6">
+                    <p>
+                        <strong>Categoría:</strong>
+                        <span th:if="${product.category != null}" th:text="${product.category.name}"></span>
+                        <span th:unless="${product.category != null}">N/A</span>
+                    </p>
+                    <p>
+                        <strong>Proveedor:</strong>
+                        <span th:if="${product.provider != null}" th:text="${product.provider.name}"></span>
+                        <span th:unless="${product.provider != null}">N/A</span>
+                    </p>
+                    <p>
+                        <strong>Estado:</strong>
+                        <span th:if="${product.isActive}" class="badge badge-success">Activo</span>
+                        <span th:unless="${product.isActive}" class="badge badge-danger">Inactivo</span>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <a th:href="@{/web/products/edit/{id}(id=${product.id})}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Editar Producto
+            </a>
+            <form th:action="@{/web/products/delete/{id}(id=${product.id})}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar lógicamente este producto?');">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar Producto
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

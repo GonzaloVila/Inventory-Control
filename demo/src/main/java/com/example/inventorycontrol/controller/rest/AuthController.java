@@ -78,8 +78,6 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
-
-
         User user = new User(
                 signupRequest.getUsername(),
                 signupRequest.getEmail(),

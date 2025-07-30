@@ -19,7 +19,7 @@ public class CategoryController {
     // Obtener todas las categorias
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategorys() {
-        return ResponseEntity.ok(categoryService.getAllCategorys());
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     // Obtener una categoria por ID
