@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Empleados</title>
+        <link rel="stylesheet" th:href="@{/css/styles.css}">
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: header}"></div>
+        <div class="container">
+            <h1>Lista de Empleados</h1>
+
+            <div sec:authorize="hasRole('ROL_ADMIN')">
+                <a th:href="@{/web/employees/new}" class="btn btn-primary">Crear Nuevo Empleado</a>
+            </div>
+
+            <div th:if="${successMessage}" class="alert alert-success">
+                <p th:text="${successMessage}"></p>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th sec:authorize="hasRole('ROL_ADMIN')">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employee : ${employees}">
+                    <td th:text="${employee.id}">1</td>
+                    <td><a th:href="@{/web/employees/{id}(id=${employee.id})}" th:text="${employee.name}">Nombre del Empleado</a></td>
+                    <td th:text="${employee.email}">email@example.com</td>
+                    <td th:text="${employee.rol}">ROL_EMPLOYEE</td>
+                    <td sec:authorize="hasRole('ROL_ADMIN')">
+                        <a th:href="@{/web/employees/edit/{id}(id=${employee.id})}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/web/employees/delete/{id}(id=${employee.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?');">Eliminar</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </body>
+</html>
