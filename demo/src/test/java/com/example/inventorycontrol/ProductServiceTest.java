@@ -58,7 +58,7 @@ class ProductServiceTest {
         // Assert
         assertNotNull(savedProduct);
         assertEquals("New Keyboard", savedProduct.getName());
-        assertTrue(savedProduct.isActive()); // Verifica que está activo
+        assertTrue(savedProduct.getIsActive()); // Verifica que está activo
         verify(productRepository).save(newProduct);
     }
 
@@ -86,7 +86,7 @@ class ProductServiceTest {
         assertNotNull(products);
         assertEquals(1, products.size());
         assertEquals("Laptop", products.get(0).getName());
-        assertTrue(products.get(0).isActive());
+        assertTrue(products.get(0).getIsActive());
         verify(productRepository).findAll();
     }
 

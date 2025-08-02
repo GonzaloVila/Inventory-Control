@@ -18,12 +18,16 @@ import java.util.Optional;
 @Where(clause = "is_active = true")
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    // Método para buscar productos por nombre (también respetará isActive = true por el @Where)
+    // Nueva consulta para obtener todos los productos con sus categorías y proveedores
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.category LEFT JOIN FETCH p.provider")
+    List<Product> findAllWithCategoryAndProvider();
+
+    // Metodo para buscar productos por nombre (también respetará isActive = true por el @Where)
     Optional<Product> findByName(String name);
 
     List<Product> findByProvider(Provider provider);
 
-    // Método para "eliminar" un producto lógicamente
+    // Metodo para "eliminar" un producto lógicamente
     @Modifying // Indica que esta consulta va a modificar la base de datos
     @Query("UPDATE Product p SET p.isActive = false WHERE p.id = :id")
     void softDeleteById(@Param("id") Long id);

@@ -2,6 +2,7 @@ package com.example.inventorycontrol.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Product {
@@ -24,11 +25,13 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonBackReference("product-category")
+    @NotNull(message = "Debes seleccionar una categoría.")
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "provider_id")
     @JsonBackReference("product-provider")
+    @NotNull(message = "Debes seleccionar un proveedor.")
     private Provider provider;
 
     public Product(){}
@@ -100,7 +103,7 @@ public class Product {
         this.provider = provider;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 

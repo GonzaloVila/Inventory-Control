@@ -62,7 +62,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/css/**", "/js/**", "/images/**", "/vendor/**").permitAll()
                                 .requestMatchers("/web/login", "/web/register").permitAll()
-                                .requestMatchers("/", "/web").permitAll() // Para las redirecciones iniciales
+                                .requestMatchers("/", "/web").permitAll()// Para las redirecciones iniciales
+                                .requestMatchers("/web/**").authenticated()
                                 .requestMatchers("/login").permitAll()
                                 .anyRequest().authenticated()
                 )

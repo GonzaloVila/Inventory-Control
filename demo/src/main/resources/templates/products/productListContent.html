@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-</head>
-<body>
-
-<div th:fragment="productListContent">
+<div th:fragment="productListContent" xmlns:th="http://www.thymeleaf.org">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800" th:text="${pageTitle}"></h1>
         <a th:href="@{/web/products/add}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -77,11 +71,7 @@
             </div>
         </div>
     </div>
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/js/demo/datatables-demo.js}"></script>
 </div>
-
-<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-<script th:src="@{/js/demo/datatables-demo.js}"></script>
-
-</body>
-</html>
