@@ -90,7 +90,6 @@ public class ProductWebController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product id: " + id));
 
         prepareProductForm(product, model);
-
         model.addAttribute("pageTitle", "Editar Producto (TEST)");
         model.addAttribute("contentFragment", "products/productFormContent :: productFormContent");
         return "layouts/main";
@@ -116,10 +115,6 @@ public class ProductWebController {
             product.setId(id);
             model.addAttribute("product", product); // Asegúrate de pasar el objeto con los errores de vuelta al formulario
             model.addAttribute("pageTitle", "Editar Producto (TEST)");
-            // Llama a un método para preparar el formulario (cargar categorías y proveedores)
-            // Puedes refactorizar el código de `prepareProductForm` en un método privado
-            // para evitar duplicación.
-            // Aquí puedes llamar a los servicios para obtener las listas
             model.addAttribute("categories", categoryService.getAllCategories());
             model.addAttribute("providers", providerService.getAllProviders());
             model.addAttribute("contentFragment", "products/productFormContent :: productFormContent");
@@ -127,8 +122,6 @@ public class ProductWebController {
         }
 
         try {
-            // En este punto ya tienes un id de categoría y proveedor, por lo que no es necesario
-            // verificar si son nulos. Solo necesitas actualizar el producto.
             productService.updateProduct(id, product);
             redirectAttributes.addFlashAttribute("successMessage", "Producto actualizado exitosamente!");
             return "redirect:/web/products";

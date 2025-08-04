@@ -1,0 +1,46 @@
+<div th:fragment="content" xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800">Proveedores</h1>
+        <p><a th:href="@{/web/providers/new}" class="btn btn-primary">Añadir Nuevo Proveedor</a></p>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Lista de Proveedores</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="provider : ${providers}">
+                            <td th:text="${provider.id}"></td>
+                            <td th:text="${provider.name}"></td>
+                            <td th:text="${provider.email}"></td>
+                            <td th:text="${provider.phone}"></td>
+                            <td th:text="${provider.isActive() ? 'Sí' : 'No'}"></td>
+                            <td>
+                                <a th:href="@{/web/providers/edit/{id}(id=${provider.id})}" class="btn btn-sm btn-warning">Editar</a>
+                                <a th:href="@{/web/providers/{id}(id=${provider.id})}" class="btn btn-sm btn-info">Ver</a>
+
+                                <form th:action="@{/web/providers/delete/{id}(id=${provider.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este proveedor?');">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <a th:href="@{/web/dashboard}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<div th:fragment="content" xmlns:th="http://www.thymeleaf.org">
+  <div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Detalles del Proveedor</h1>
+
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" th:text="${provider.name}"></h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>ID:</strong> <span th:text="${provider.id}"></span></p>
+            <p><strong>Nombre:</strong> <span th:text="${provider.name}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${provider.email}"></span></p>
+            <p><strong>Teléfono:</strong> <span th:text="${provider.phone}"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Dirección:</strong> <span th:text="${provider.address}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${provider.isActive() ? 'Activo' : 'Inactivo'}"></span></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <a th:href="@{/web/providers/edit/{id}(id=${provider.id})}" class="btn btn-warning">Editar Proveedor</a>
+        <a th:href="@{/web/providers}" class="btn btn-secondary">Volver a la Lista</a>
+      </div>
+    </div>
+  </div>
+</div>

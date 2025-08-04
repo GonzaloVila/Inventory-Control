@@ -40,7 +40,7 @@ public class RegistrationService {
 
         // 3. Crear nuevo objeto User con email
         User user = new User(signupRequest.getUsername(),
-                signupRequest.getEmail(), // ¡Ahora pasamos el email!
+                signupRequest.getEmail(),
                 encoder.encode(signupRequest.getPassword()));
 
         // 4. Asignar roles
