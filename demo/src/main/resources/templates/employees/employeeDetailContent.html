@@ -1,28 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <head>
-    <meta charset="UTF-8">
-    <title>Detalles del Empleado</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-  </head>
-  <body>
-    <div th:replace="~{fragments/header :: header}"></div>
-    <div class="container">
-      <h1>Detalles del Empleado</h1>
+<div th:fragment="content" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+  <h1>Detalles del Empleado</h1>
 
-      <p><strong>ID:</strong> <span th:text="${employee.id}">1</span></p>
-      <p><strong>Nombre:</strong> <span th:text="${employee.name}">Nombre del Empleado</span></p>
-      <p><strong>Email:</strong> <span th:text="${employee.email}">email@example.com</span></p>
-      <p><strong>Rol:</strong> <span th:text="${employee.rol}">ROL_EMPLOYEE</span></p>
+  <p><strong>ID:</strong> <span th:text="${employee.id}">1</span></p>
+  <p><strong>Nombre:</strong> <span th:text="${employee.name}">Nombre del Empleado</span></p>
+  <p><strong>Email:</strong> <span th:text="${employee.email}">email@example.com</span></p>
+  <p><strong>Rol:</strong> <span th:text="${employee.rol}">ROL_EMPLOYEE</span></p>
 
-      <div sec:authorize="hasRole('ROL_ADMIN')">
-        <a th:href="@{/web/employees/edit/{id}(id=${employee.id})}" class="btn btn-warning">Editar</a>
-        <a th:href="@{/web/employees/delete/{id}(id=${employee.id})}" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?');">Eliminar</a>
-      </div>
+  <div sec:authorize="hasRole('ROL_ADMIN')">
+    <a th:href="@{/web/employees/edit/{id}(id=${employee.id})}" class="btn btn-warning">Editar</a>
+    <a th:href="@{/web/employees/delete/{id}(id=${employee.id})}" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?');">Eliminar</a>
+  </div>
 
-      <a th:href="@{/web/employees}" class="btn btn-secondary">Volver a la lista</a>
-    </div>
-    <div th:replace="~{fragments/footer :: footer}"></div>
-  </body>
-</html>
+  <a th:href="@{/web/employees}" class="btn btn-secondary">Volver a la lista</a>
+</div>
