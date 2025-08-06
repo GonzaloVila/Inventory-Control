@@ -103,7 +103,7 @@ class ProductServiceTest {
         assertTrue(foundProduct.isPresent());
         assertEquals(productId, foundProduct.get().getId());
         assertEquals("Laptop", foundProduct.get().getName());
-        assertTrue(foundProduct.get().isActive());
+        assertTrue(foundProduct.get().getIsActive());
         verify(productRepository).findById(productId);
     }
 
@@ -145,7 +145,7 @@ class ProductServiceTest {
         assertEquals("Updated Laptop Pro", resultProduct.getName());
         assertEquals(1500.0, resultProduct.getPrice());
         assertEquals(15, resultProduct.getStock());
-        assertTrue(resultProduct.isActive());
+        assertTrue(resultProduct.getIsActive());
         verify(productRepository, times(1)).findById(productId);
         verify(productRepository, times(1)).save(any(Product.class));
     }

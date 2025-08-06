@@ -46,7 +46,7 @@ public class ProductWebController {
     public String listProducts(Model model) {
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("pageTitle", "Lista de Productos");
-        model.addAttribute("contentFragment", "products/productListContent :: productListContent");
+        model.addAttribute("contentFragment", "products/productListContent");
         return "layouts/main";
     }
 
@@ -56,7 +56,7 @@ public class ProductWebController {
         Product product = new Product();
         prepareProductForm(product, model);
         model.addAttribute("pageTitle", "Añadir Producto (TEST)");
-        model.addAttribute("contentFragment", "products/productFormContent :: productFormContent");
+        model.addAttribute("contentFragment", "products/productFormContent");
         return "layouts/main";
     }
 
@@ -66,7 +66,7 @@ public class ProductWebController {
         if (result.hasErrors()) {
             prepareProductForm(product, model);
             model.addAttribute("pageTitle", product.getId() == null ? "Añadir Producto (TEST)" : "Editar Producto (TEST)");
-            model.addAttribute("contentFragment", "products/productFormContent :: productFormContent");
+            model.addAttribute("contentFragment", "products/productFormContent");
             return "layouts/main";
         }
 
@@ -80,7 +80,7 @@ public class ProductWebController {
 
         productService.createProduct(product);
         redirectAttributes.addFlashAttribute("message", "Producto guardado con éxito.");
-        return "redirect:/products";
+        return "redirect:/web/products";
     }
 
     // 4. Mostrar formulario para editar un producto existente
@@ -91,7 +91,7 @@ public class ProductWebController {
 
         prepareProductForm(product, model);
         model.addAttribute("pageTitle", "Editar Producto (TEST)");
-        model.addAttribute("contentFragment", "products/productFormContent :: productFormContent");
+        model.addAttribute("contentFragment", "products/productFormContent");
         return "layouts/main";
     }
 
@@ -113,11 +113,11 @@ public class ProductWebController {
 
         if (bindingResult.hasErrors()) {
             product.setId(id);
-            model.addAttribute("product", product); // Asegúrate de pasar el objeto con los errores de vuelta al formulario
+            model.addAttribute("product", product);
             model.addAttribute("pageTitle", "Editar Producto (TEST)");
             model.addAttribute("categories", categoryService.getAllCategories());
             model.addAttribute("providers", providerService.getAllProviders());
-            model.addAttribute("contentFragment", "products/productFormContent :: productFormContent");
+            model.addAttribute("contentFragment", "products/productFormContent");
             return "layouts/main";
         }
 
@@ -158,7 +158,7 @@ public class ProductWebController {
         }
         model.addAttribute("product", productOptional.get());
         model.addAttribute("pageTitle", "Detalles del Producto");
-        model.addAttribute("contentFragment", "products/productDetailContent :: productDetailContent");
+        model.addAttribute("contentFragment", "products/productDetailContent");
         return "layouts/main";
     }
 }
