@@ -71,4 +71,9 @@ public class CustomerOrderService {
         }
         orderRepository.deleteById(id);
     }
+
+    // Metodo para el dashboard: contar órdenes pendientes
+    public long countPendingOrders() {
+        return orderRepository.countByState("PENDING");
+    }
 }

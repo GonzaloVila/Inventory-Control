@@ -1,14 +1,16 @@
 package com.example.inventorycontrol.controller.web;
 
+import com.example.inventorycontrol.model.Product;
 import com.example.inventorycontrol.payload.request.LoginRequest;
 import com.example.inventorycontrol.payload.request.SignupRequest;
 import com.example.inventorycontrol.security.services.RegistrationService;
-import org.springframework.security.core.userdetails.UserDetails;
-
+import com.example.inventorycontrol.service.CustomerOrderService;
+import com.example.inventorycontrol.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +20,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/web")
 public class AuthWebController {
 
     @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private CustomerOrderService customerOrderService;
+
 
     // --- LOGIN ---
     @GetMapping("/login")
@@ -33,8 +44,6 @@ public class AuthWebController {
         }
         return "auth/login";
     }
-
-    // Opcional: Redirigir la raíz a tu dashboard si el usuario ya está autenticado
 
     @GetMapping("/")
     public String redirectToDashboardIfAuthenticated() {
@@ -95,6 +104,20 @@ public class AuthWebController {
                 model.addAttribute("username", "Usuario Desconocido");
             }
         }
+
+        // Agregamos la lógica para el dashboard
+        long totalProducts = productService.countAllProducts();
+        long pendingOrders = customerOrderService.countPendingOrders();
+        List<Product> lowStockProducts = productService.getProductsWithLowStock(5);
+        Double totalInventoryValue = productService.calculateTotalInventoryValue();
+
+        // Pasamos los datos a la vista
+        model.addAttribute("totalProducts", totalProducts);
+        model.addAttribute("pendingOrders", pendingOrders);
+        model.addAttribute("lowStockProducts", lowStockProducts);
+        model.addAttribute("totalInventoryValue", totalInventoryValue);
+
+
         model.addAttribute("pageTitle", "Dashboard de Inventario");
         model.addAttribute("contentFragment", "dashboardContent");
         return "layouts/main";

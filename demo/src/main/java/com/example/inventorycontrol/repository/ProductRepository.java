@@ -31,4 +31,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying // Indica que esta consulta va a modificar la base de datos
     @Query("UPDATE Product p SET p.isActive = false WHERE p.id = :id")
     void softDeleteById(@Param("id") Long id);
+
+    // Metodo para encontrar productos con un stock menor a un valor dado
+    List<Product> findByStockLessThan(int stock);
+
+    // Metodo para calcular el valor total del inventario
+    @Query("SELECT SUM(p.price * p.stock) FROM Product p WHERE p.isActive = true")
+    Double calculateTotalInventoryValue();
 }

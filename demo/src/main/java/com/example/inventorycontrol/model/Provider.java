@@ -34,7 +34,6 @@ public class Provider {
         this.phone = phone;
         this.email = email;
         this.products = new HashSet<>();
-        this.isActive = true;
     }
 
     public Long getId() {

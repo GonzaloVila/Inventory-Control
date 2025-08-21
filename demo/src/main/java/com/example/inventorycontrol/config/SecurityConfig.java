@@ -62,28 +62,28 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll() // Sigue permitiendo tus endpoints de API REST
-                                .requestMatchers("/api/test/**").permitAll()
-                                .requestMatchers("/css/**", "/js/**", "/img/**", "/vendor/**", "/favicon.ico").permitAll()
-                                .requestMatchers("/web/login", "/web/register").permitAll()
-                                .requestMatchers("/", "/web").permitAll()// Para las redirecciones iniciales
-                                .requestMatchers("/web/**").authenticated()
-                                .requestMatchers("/login").permitAll()
-                                .anyRequest().authenticated()
-                )
+                // Reordena
                 .formLogin(form -> form
-                                .loginPage("/web/login") // Esta es la URL de la página de login
-                                .loginProcessingUrl("/login") // URL a la que el formulario POSTea los datos
-                                .defaultSuccessUrl("/web/dashboard", true) // URL a la que redirigir después de login exitoso
-                                .failureUrl("/web/login?error") // URL a la que redirigir si el login falla
+                        .loginPage("/web/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/web/dashboard", true)
+                        .failureUrl("/web/login?error")
                 )
                 // Configuración de Logout
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // URL para la acción de logout
-                        .logoutSuccessUrl("/web/login?logout") // URL a la que redirigir después de un logout exitoso
-                        .permitAll() // Permitir acceso a la URL de logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/web/login?logout")
+                        .permitAll()
+                )
+                // reglas de autorización
+                .authorizeHttpRequests(auth ->
+                        auth
+                                .requestMatchers("/css/**", "/js/**", "/img/**", "/vendor/**", "/favicon.ico").permitAll()
+                                .requestMatchers("/api/auth/**", "/api/test/**").permitAll()
+                                .requestMatchers("/web/login", "/web/register", "/login").permitAll()
+                                .requestMatchers("/", "/web").permitAll()
+                                .requestMatchers("/web/**").authenticated()
+                                .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());

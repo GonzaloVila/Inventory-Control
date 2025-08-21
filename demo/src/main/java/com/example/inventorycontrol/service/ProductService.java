@@ -5,6 +5,7 @@ import com.example.inventorycontrol.model.Category;
 import com.example.inventorycontrol.model.Product;
 import com.example.inventorycontrol.model.Provider;
 import com.example.inventorycontrol.repository.CategoryRepository;
+import com.example.inventorycontrol.repository.OrderItemRepository;
 import com.example.inventorycontrol.repository.ProductRepository;
 import com.example.inventorycontrol.repository.ProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,14 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProviderRepository providerRepository;
     private final CategoryRepository categoryRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ProviderRepository providerRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, ProviderRepository providerRepository, CategoryRepository categoryRepository, OrderItemRepository orderItemRepository) {
         this.productRepository = productRepository;
         this.providerRepository = providerRepository;
         this.categoryRepository = categoryRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Transactional(readOnly = true)
@@ -84,5 +87,24 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Producto con ID " + id + " no encontrado."));
         product.setActive(false);
         productRepository.save(product);
+    }
+
+
+    // Mtodo para el dashboard: obtener el total de productos
+    public long countAllProducts() {
+        return productRepository.count();
+    }
+    // Mtodo para el dashboard: obtener productos con bajo stock
+    public List<Product> getProductsWithLowStock(int threshold) {
+        return productRepository.findByStockLessThan(threshold);
+    }
+    // Mtodo para el dashboard: calcular el valor total del inventario
+    public Double calculateTotalInventoryValue() {
+        return productRepository.calculateTotalInventoryValue();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Object[]> getTopSellingProducts() {
+        return orderItemRepository.findTopSellingProducts();
     }
 }

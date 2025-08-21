@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Long> {
     List<CustomerOrder> findByProvider(Provider provider);
+    long countByState(String state);
 
     //  cargar todas las órdenes con sus ítems, productos, clientes y proveedores
     @Query("SELECT DISTINCT co FROM CustomerOrder co " +
@@ -32,4 +33,10 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Lo
             "LEFT JOIN FETCH co.employee e " +
             "WHERE co.id = :id")
     Optional<CustomerOrder> findByIdWithDetails(Long id);
+
+    @Query("SELECT FUNCTION('MONTH', o.date), SUM(oi.quantity) " +
+            "FROM CustomerOrder o JOIN o.items oi " +
+            "GROUP BY FUNCTION('MONTH', o.date) " +
+            "ORDER BY FUNCTION('MONTH', o.date)")
+    List<Object[]> findMonthlySalesData();
 }
